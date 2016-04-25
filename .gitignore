@@ -1,3 +1,5 @@
 target/
 temp/
-*.xlsx
+*.jar
+*.rar
+历史交易数据/

@@ -5,9 +5,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.formula.functions.Today;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -20,10 +23,15 @@ import rx.Subscriber;
 
 public class DownloadCSV {
 	
-	private final static String CSV_URL = "http://quotes.money.163.com/service/chddata.html?code=%s&start=19900101&end=20160418&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
+	private final static String CSV_URL = "http://quotes.money.163.com/service/chddata.html?code=%s&start=19900101&end=%s&fields=TCLOSE;HIGH;LOW;TOPEN;LCLOSE;CHG;PCHG;TURNOVER;VOTURNOVER;VATURNOVER;TCAP;MCAP";
 	public final static String TEMP_FOLDER = "temp/";
+	private static String today;
 	private ArrayList<String> stocks = new ArrayList<String>();
 
+	static{
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+		today = simpleDateFormat.format(new Date());
+	}
 	public Observable<File> doAction() {
 		createTempFolder();
 		return Observable.create(new OnSubscribe<String>() {
@@ -64,7 +72,14 @@ public class DownloadCSV {
 						// TODO Auto-generated method stub
 						try {
 							System.out.println("start download\t" + stockNo);
-							URL website = new URL(String.format(CSV_URL, stockNo));
+							String code = stockNo;
+							if (code.startsWith("60")){
+								code = "0" + code;
+							}else if (code.startsWith("00")){
+								code ="1" + code;
+							}
+						
+							URL website = new URL(String.format(CSV_URL, code,today));
 							File file = new File(TEMP_FOLDER + stockNo +".csv");
 							FileUtils.copyURLToFile(website, file);
 							subscriber.onNext(file);

@@ -17,6 +17,7 @@ public class App {
 	}
 	
 	private void doTask(){
+		downloadCSV.doAction().subscribe();
 		csvToExcel.getCSV().subscribe(new Action1<File>() {
 
 			public void call(File t) {

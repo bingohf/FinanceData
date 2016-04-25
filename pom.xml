@@ -22,7 +22,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>fully.qualified.MainClass</mainClass>
+							<mainClass>com.togb.finance.App</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
