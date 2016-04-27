@@ -1,4 +1,4 @@
-package com.togb.finance;
+package com.togb.finance.trade_history;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,6 +20,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.togb.finance.MUtils;
+
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -28,7 +30,7 @@ public class CSVToExcel {
 	
 	
 	public Observable<File> getCSV(){
-		File f = new File(DownloadCSV.TEMP_FOLDER);
+		File f = new File(DownloadHistoryCSV.TEMP_FOLDER);
 		File[] matchingFiles = f.listFiles(new FilenameFilter() {
 		    public boolean accept(File dir, String name) {
 		        return name.toLowerCase().endsWith("csv");

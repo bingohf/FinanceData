@@ -1,5 +1,5 @@
 target/
-temp/
+temp*/
 *.jar
 *.rar
 历史交易数据/
