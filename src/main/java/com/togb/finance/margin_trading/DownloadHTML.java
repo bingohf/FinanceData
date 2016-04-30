@@ -31,23 +31,49 @@ public class DownloadHTML {
 								if (!file.exists()){
 									file.mkdirs();
 								}
-								File pageFile = new File(TEMP_FLODER + stockNo +"/1.html");
-							
-								try {
-									URL website = new URL(String.format(URL, stockNo,1));
-									FileUtils.copyURLToFile(website, pageFile);
-									subscriber.onNext(file);
-									subscriber.onCompleted();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-									subscriber.onError(e);
-								}
+								downloadDetail(stockNo, 1).subscribe(new Subscriber<File>() {
+
+									public void onCompleted() {
+										// TODO Auto-generated method stub
+										
+									}
+
+									public void onError(Throwable e) {
+										// TODO Auto-generated method stub
+										
+									}
+
+									public void onNext(File file) {
+										
+										
+									}
+								});
 							}
 							
 						});
 					}
 				});
+	}
+	
+	private Observable<File> downloadDetail(final String stockNo,final int pageIndex) {
+		return Observable.create(new OnSubscribe<File>(){
+
+			public void call(Subscriber<? super File> subscriber) {
+				try {
+					File pageFile = new File(TEMP_FLODER + stockNo +"/" + pageIndex +".html");
+					URL website = new URL(String.format(URL, stockNo,pageIndex));
+					FileUtils.copyURLToFile(website, pageFile);
+					subscriber.onNext(pageFile);
+					subscriber.onCompleted();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					subscriber.onError(e);
+				}
+				
+			}
+			
+		}).retry(3);
 	}
 
 }
