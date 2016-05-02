@@ -51,28 +51,31 @@ public class DownloadHTML {
 										try {
 											Document document = Jsoup.parse(file, "GB2312");
 											String pageInfo = document.select(".page_info").text();
+											if (pageInfo == null || pageInfo.length() == 0){
+												return;
+											}
 											int pageSize = Integer.parseInt(pageInfo.split("\\/")[1]);
-											Observable.range(2, pageSize).flatMap(new Func1<Integer, Observable<? extends File>>() {
+											Observable.range(2, pageSize -1).flatMap(new Func1<Integer, Observable<? extends File>>() {
 
 												public Observable<? extends File> call(Integer t) {
 													// TODO Auto-generated method stub
 													return downloadDetail(stockNo, t);
 												}
-											}).subscribe(new Subscriber() {
+											}).subscribe(new Subscriber<File>() {
 
 												public void onCompleted() {
 													// TODO Auto-generated method stub
-													
+													subscriber.onCompleted();
 												}
 
 												public void onError(Throwable e) {
 													// TODO Auto-generated method stub
-													
+													subscriber.onError(e);
 												}
 
-												public void onNext(Object t) {
+												public void onNext(File t) {
 													// TODO Auto-generated method stub
-													
+													subscriber.onNext(t);
 												}
 											});
 										} catch (IOException e) {

@@ -11,6 +11,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.togb.finance.margin_trading.DownloadHTML;
+import com.togb.finance.margin_trading.HTMLTableToExcel;
 import com.togb.finance.trade_history.CSVToExcel;
 import com.togb.finance.trade_history.DownloadHistoryCSV;
 
@@ -25,7 +26,7 @@ public class App {
 	private DownloadHistoryCSV downloadCSV = new DownloadHistoryCSV();
 	private CSVToExcel csvToExcel = new CSVToExcel();
 	private DownloadHTML downloadHTML = new DownloadHTML();
-	
+	private HTMLTableToExcel htmlTableToExcel = new HTMLTableToExcel();
 	private ArrayList<String> mStockList = new ArrayList<String>();
 	
 	public static void main(String[] args) {
@@ -35,8 +36,10 @@ public class App {
 	private void doTask(){
 		setStockList();
 		
-		downloadHTML.doDownLoad(mStockList).subscribe();
-/*		downloadCSV.doAction(mStockList).subscribe();
+		htmlTableToExcel.doAction(mStockList)
+		.subscribe();
+/*		downloadHTML.doDownLoad(mStockList).subscribe();
+		downloadCSV.doAction(mStockList).subscribe();
 		csvToExcel.getCSV().subscribe(new Action1<File>() {
 
 			public void call(File t) {
